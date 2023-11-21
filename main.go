@@ -18,13 +18,12 @@ func main() {
 		log.Fatal("Error loading .env file!!")
 	}
 
-	println(">>>>>>>>> Before Init", db.GetDB())
 	err := db.InitDB()
 	if err != nil {
 		log.Fatal("Error connecting database: ", err.Error())
 	}
 
-	println(">>>>>>>>> After Init", db.GetDB())
+	defer db.CloseDB()
 
 	err = db.Migrate()
 	if err != nil {

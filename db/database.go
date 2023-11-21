@@ -21,12 +21,21 @@ func InitDB() error {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", user, pass, host, port, name)
 	var err error
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	println(">>>>>>DB,", db)
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func CloseDB() {
+	if db != nil {
+		sqlDB, err := db.DB()
+		if err != nil {
+			return
+		}
+		sqlDB.Close()
+	}
 }
 
 func GetDB() *gorm.DB {
